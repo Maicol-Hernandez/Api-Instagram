@@ -1,0 +1,15 @@
+{
+    "name": "dyalogo/scriptdelete",
+    "autoload": {
+        "psr-4": {
+            "Dyalogo\\Scriptdelete\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maicol Hernandez Peralta",
+            "email": "dev2@dyalogo.com"
+        }
+    ],
+    "require": {}
+}
