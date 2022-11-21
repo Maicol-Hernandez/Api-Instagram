@@ -1,7 +1,8 @@
 <?php
 
-namespace Dyalogo\Scriptdelete\models;
+namespace Api\Instagram\models;
 
-interface IPost {
-    public function toString():string;
+interface IPost
+{
+    public function toString(): string;
 }

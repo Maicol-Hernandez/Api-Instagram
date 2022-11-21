@@ -1,30 +1,32 @@
 <?php
 
-namespace Dyalogo\Scriptdelete\models;
+namespace Api\Instagram\models;
 
-use Dyalogo\Scriptdelete\utils\UUID;
+use Api\Instagram\utils\UUID;
 
 class User
 {
 
-    // private string $name;
-    // private string $username;
-    // private string $email;
-    // private string $password;
+    private string $name;
+    private string $username;
+    private string $email;
+    private string $password;
 
     private string $id;
     private array $posts;
     private array $followers;
 
     public function __construct(
-        private string $name,
-        private string $username,
-        private string $email,
-        private string $password
+        string $name,
+        string $username,
+        string $email,
+        string $password
     ) {
+        echo "Se creo un id unico:" . UUID::generate() . "\n";
         $this->id = UUID::generate();
         $this->posts = [];
         $this->followers = [];
+        $this->username = $username;
     }
 
     public function getId()
@@ -55,7 +57,7 @@ class User
     public function showPosts()
     {
         foreach ($this->posts as $post) {
-            var_dump($post->toString());
+            var_dump("xxxxxxxxxxxxxxxxxxxxxxx", $post->toString());
         }
     }
 

@@ -1,65 +1,83 @@
 <?php
+
+declare(strict_types=1);
+
 require 'vendor/autoload.php';
 
-use Dyalogo\Scriptdelete\models\ImagePost;
-use Dyalogo\Scriptdelete\models\Post;
-use Dyalogo\Scriptdelete\models\User;
-use Dyalogo\Scriptdelete\models\VideoPost;
-
-$maicol = new User("Michael Hernandez", "Maicol-Hernandez", "maicolhernandez420@gmail.com", "Maicol20016");
-$viviana = new User("Viviana Hernandez", "Viviana-Hernandez", "vivianahernandez123@gmail.com", "Viviana123");
-$camilo = new User("Camilo Hernandez", "Camilo-Hernandez", "camilohernandez123@gmail.com", "Camilo123");
-$julio = new User("Julio Sanchez", "Julio-Sanchez", "juliosanchez12@gmail.com", "Julio123");
-
-$maicolPost = new ImagePost("Programando en las noches", "IMG001.jpg");
-$vivianaPost = new VideoPost("En la playa de Cancun, con mi amorcito","VID001.mov");
-$camiloPost = new ImagePost("De vacaciones con su novia, Julia","IMG002.jpg");
-$julioPost = new VideoPost("Haciendo streaming, con mis seguidores", "VID002.mov");
-
-$maicol->publish($maicolPost);
-$maicol->publish($maicolPost);
-$maicol->publish($maicolPost);
-$maicol->publish($maicolPost);
-$viviana->publish($vivianaPost);
-$camilo->publish($camiloPost);
-$julio->publish($julioPost);
+set_exception_handler("ErrorHandler::handleException");
+header('Content-type: application/json; charset=UTF-8');
 
 
-$maicolPost->addLike($viviana);
-$maicolPost->addLike($camilo);
+$parts = explode("/", $_SERVER['REQUEST_URI']);
 
-$vivianaPost->addLike($camilo);
-$vivianaPost->addLike($julio);
-$vivianaPost->addLike($maicol);
+if (count($parts) > 8) {
+    # code...
+    http_response_code(404);
+    exit;
+}
 
-$camiloPost->addLike($viviana);
-$camiloPost->addLike($maicol);
+// use Dyalogo\Scriptdelete\models\ImagePost;
+// use Dyalogo\Scriptdelete\models\Post;
+// use Dyalogo\Scriptdelete\models\User;
+// use Dyalogo\Scriptdelete\models\VideoPost;
 
-$julioPost->addLike($maicol);
-$julioPost->addLike($viviana);
-$julioPost->addLike($camilo);
-$julioPost->addLike($julio);
+// $maicol = new User("Michael Hernandez", "Maicol-Hernandez", "maicolhernandez420@gmail.com", "Maicol20016");
+// $viviana = new User("Viviana Hernandez", "Viviana-Hernandez", "vivianahernandez123@gmail.com", "Viviana123");
+// $camilo = new User("Camilo Hernandez", "Camilo-Hernandez", "camilohernandez123@gmail.com", "Camilo123");
+// $julio = new User("Julio Sanchez", "Julio-Sanchez", "juliosanchez12@gmail.com", "Julio123");
+
+// $maicolPost = new ImagePost("Programando en las noches", "IMG001.jpg");
+// $vivianaPost = new VideoPost("En la playa de Cancun, con mi amorcito", "VID001.mov");
+// $camiloPost = new ImagePost("De vacaciones con su novia, Julia", "IMG002.jpg");
+// $julioPost = new VideoPost("Haciendo streaming, con mis seguidores", "VID002.mov");
+
+// $maicol->publish($maicolPost);
+// $maicol->publish($maicolPost);
+// $maicol->publish($maicolPost);
+// $maicol->publish($maicolPost);
+// $viviana->publish($vivianaPost);
+// $camilo->publish($camiloPost);
+// $julio->publish($julioPost);
 
 
-$camilo->addFollower($maicol);
-$camilo->addFollower($viviana);
+// $maicolPost->addLike($viviana);
+// $maicolPost->addLike($camilo);
 
-$julio->addFollower($viviana);
+// $vivianaPost->addLike($camilo);
+// $vivianaPost->addLike($julio);
+// $vivianaPost->addLike($maicol);
 
-$maicol->addFollower($camilo);
-$maicol->addFollower($viviana);
-$maicol->addFollower($julio);
+// $camiloPost->addLike($viviana);
+// $camiloPost->addLike($maicol);
+
+// $julioPost->addLike($maicol);
+// $julioPost->addLike($viviana);
+// $julioPost->addLike($camilo);
+// $julioPost->addLike($julio);
 
 
-print_r(User::showProfile($maicol));
-print_r(User::showProfile($viviana));
-print_r(User::showProfile($camilo));
-print_r(User::showProfile($julio));
+// $camilo->addFollower($maicol);
+// $camilo->addFollower($viviana);
 
-print_r($maicolPost->toString());
-print_r($vivianaPost->toString());
-print_r($camiloPost->toString());
-print_r($julioPost->toString());
+// $julio->addFollower($viviana);
+
+// $maicol->addFollower($camilo);
+// $maicol->addFollower($viviana);
+// $maicol->addFollower($julio);
+
+// $maicol->showPosts();
+
+
+// print_r(User::showProfile($maicol));
+// print_r(User::showProfile($viviana));
+// print_r(User::showProfile($camilo));
+// print_r(User::showProfile($julio));
+
+// print_r($maicolPost->toString());
+// print_r($vivianaPost->toString());
+// print_r($camiloPost->toString());
+// print_r($julioPost->toString());
+
 
 
 

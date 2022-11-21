@@ -1,12 +1,17 @@
-<?php 
+<?php
 
-namespace Dyalogo\Scriptdelete\models;
+namespace Api\Instagram\models;
 
-class Like {
-    
-    public function __construct(private User $user){}
+class Like
+{
+    private User $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
-    public function getUser(): User{
+    public function getUser(): User
+    {
         return $this->user;
     }
 }

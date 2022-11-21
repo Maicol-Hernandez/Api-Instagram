@@ -1,8 +1,8 @@
 {
-    "name": "dyalogo/scriptdelete",
+    "name": "api/instagram",
     "autoload": {
         "psr-4": {
-            "Dyalogo\\Scriptdelete\\": "src/"
+            "Api\\Instagram\\": "src/"
         }
     },
     "authors": [

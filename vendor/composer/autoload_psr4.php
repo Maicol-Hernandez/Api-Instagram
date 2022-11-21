@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Dyalogo\\Scriptdelete\\' => array($baseDir . '/src'),
+    'Api\\Instagram\\' => array($baseDir . '/src'),
 );

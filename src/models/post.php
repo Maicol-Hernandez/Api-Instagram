@@ -1,16 +1,16 @@
 <?php
 
-namespace Dyalogo\Scriptdelete\models;
+namespace Api\Instagram\models;
 
-use Dyalogo\Scriptdelete\utils\UUID;
-// use Dyalogo\Scriptdelete\models\Like;
+use Api\Instagram\utils\UUID;
+
 
 class Post
 {
     private string $id;
-    // private string $mensaje;
+    private string $mensaje;
     private array $likes;
-    public function __construct(private string $mensaje)
+    public function __construct(string $mensaje)
     {
         print_r("Se creo un nuevo objecto Post \n");
         $this->id = UUID::generate();
@@ -64,8 +64,8 @@ class Post
         if ($this->checkIfUserLiked($user)) {
             $this->removeLike($user);
         } else {
-           $like = new Like($user);
-           array_push($this->likes, $like);
+            $like = new Like($user);
+            array_push($this->likes, $like);
         }
     }
 

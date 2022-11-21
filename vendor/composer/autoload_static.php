@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInitf4a8d9994d01766ec4bd1302c514f950
 {
     public static $prefixLengthsPsr4 = array (
-        'D' => 
+        'A' => 
         array (
-            'Dyalogo\\Scriptdelete\\' => 21,
+            'Api\\Instagram\\' => 14,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Dyalogo\\Scriptdelete\\' => 
+        'Api\\Instagram\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

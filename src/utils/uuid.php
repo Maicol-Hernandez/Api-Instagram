@@ -1,6 +1,6 @@
 <?php 
 
-namespace Dyalogo\Scriptdelete\utils;
+namespace Api\Instagram\utils;
 
 class UUID {
    public static function generate() {

@@ -1,19 +1,23 @@
 <?php
 
-namespace Dyalogo\Scriptdelete\models;
+namespace Api\Instagram\models;
 
 class VideoPost extends Post implements IPost
 {
-    // private string $video;
+    private string $video;
+    private string $mensaje;
 
     public function __construct(
-       private string $mensaje,
-       private string $video
+        string $mensaje,
+        string $video
     ) {
+        print_r("Se creo un nuevo objecto VideoPost \n");
+        $this->video = $video;
         parent::__construct($mensaje);
     }
 
-    public function getVideo():string {
+    public function getVideo(): string
+    {
         return $this->video;
     }
 
@@ -22,7 +26,7 @@ class VideoPost extends Post implements IPost
         $info = "Id: {$this->getId()} \n";
         $info .= "Mensaje: {$this->getMensaje()} \n";
         $info .= "Video: {$this->getVideo()} \n\n";
-        $info .= "Likes: ". count($this->getLikes()) . "\n\n";
+        $info .= "Likes: " . count($this->getLikes()) . "\n\n";
 
         return $info;
     }
