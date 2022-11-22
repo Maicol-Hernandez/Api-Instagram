@@ -6,8 +6,7 @@
     "authors": [
         {
             "name": "Michael Fernando Hernandez Peralta",
-            "email": "maicolhernandez420@gmail.com",
-            "homepage": ""
+            "email": "maicolhernandez420@gmail.com"
         }
     ],
     "minimum-stability": "dev",
