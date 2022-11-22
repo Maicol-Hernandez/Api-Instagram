@@ -1,15 +1,25 @@
 {
     "name": "api/instagram",
+    "description": "ApiInstagram es un micrip framework pensando en el desarrollo de APIs con arquitectura REST y no depende de ninguna libreria ",
+    "type": "package",
+    "license": "",
+    "authors": [
+        {
+            "name": "Michael Fernando Hernandez Peralta",
+            "email": "maicolhernandez420@gmail.com",
+            "homepage": ""
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "7.4 - 8.1"
+    },
     "autoload": {
         "psr-4": {
             "Api\\Instagram\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Maicol Hernandez Peralta",
-            "email": "dev2@dyalogo.com"
-        }
-    ],
-    "require": {}
+    "file": [
+        "src/helpers.php"
+    ]
 }
