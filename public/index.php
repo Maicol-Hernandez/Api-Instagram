@@ -15,10 +15,10 @@ $app->send();
 
 
 
-// use Dyalogo\Scriptdelete\models\ImagePost;
-// use Dyalogo\Scriptdelete\models\Post;
-// use Dyalogo\Scriptdelete\models\User;
-// use Dyalogo\Scriptdelete\models\VideoPost;
+// use Dyalogo\Scriptdelete\Models\ImagePost;
+// use Dyalogo\Scriptdelete\Models\Post;
+// use Dyalogo\Scriptdelete\Models\User;
+// use Dyalogo\Scriptdelete\Models\VideoPost;
 
 
 // $maicolPost = new ImagePost("Programando en las noches", "IMG001.jpg");

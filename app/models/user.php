@@ -1,8 +1,8 @@
 <?php
 
-namespace Api\Instagram\models;
+namespace App\Models;
 
-use Api\Instagram\utils\UUID;
+use App\Utils\UUID;
 
 class User
 {

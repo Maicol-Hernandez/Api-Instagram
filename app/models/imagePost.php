@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Instagram\models;
+namespace App\Models;
 
 
 class ImagePost extends Post implements IPost

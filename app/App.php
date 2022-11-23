@@ -77,7 +77,7 @@ class App
                 # code...
                 $response = call_user_func_array($handler, array_values($path_params));
             } else {
-                
+
                 list($class, $method) = explode('@', $handler, 2);
                 $response = call_user_func_array([new $class, $method], array_values($path_params));
             }
@@ -89,7 +89,7 @@ class App
 
             $response->returnData();
         } catch (HttpException $e) {
-            $response = new Response('josn', $e->getMessage(), $e->getCode());
+            $response = new Response('json', $e->getMessage(), $e->getCode());
             $response->returnData();
         } catch (Throwable $e) {
             //throw $th;
@@ -97,6 +97,9 @@ class App
                 # code...
                 throw $e;
             }
+
+            echo "error2";
+
             $this->saveLog($e);
             $response = new Response('json', 'Internal Server Error', 500);
             $response->returnData();
@@ -106,6 +109,7 @@ class App
     private function saveLog($exception): void
     {
         # code...
+        echo "seveLog";
 
         $log_dir = $_ENV['ROOT_PROJECT'] . '/logs/';
 

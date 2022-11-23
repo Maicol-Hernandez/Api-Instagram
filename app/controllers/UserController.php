@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
-use Api\Instagram\models\User;
+use App\Models\User;
 use Api\Instagram\Request;
 
 class UserController extends Controller
