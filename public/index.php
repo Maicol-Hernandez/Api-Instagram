@@ -1,30 +1,25 @@
 <?php
 
 declare(strict_types=1);
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../app/helpers/helpers.php';
+require __DIR__ . '/../app/routes/web.php';
 
-require 'vendor/autoload.php';
-
-set_exception_handler("ErrorHandler::handleException");
-header('Content-type: application/json; charset=UTF-8');
+$_ENV['DEBUG_MODE'] = true;
+$_ENV['ROOT_PROJECT'] = __DIR__ . '/../';
 
 
-$parts = explode("/", $_SERVER['REQUEST_URI']);
 
-if (count($parts) > 8) {
-    # code...
-    http_response_code(404);
-    exit;
-}
+$app = new Api\Instagram\App();
+$app->send();
+
+
 
 // use Dyalogo\Scriptdelete\models\ImagePost;
 // use Dyalogo\Scriptdelete\models\Post;
 // use Dyalogo\Scriptdelete\models\User;
 // use Dyalogo\Scriptdelete\models\VideoPost;
 
-// $maicol = new User("Michael Hernandez", "Maicol-Hernandez", "maicolhernandez420@gmail.com", "Maicol20016");
-// $viviana = new User("Viviana Hernandez", "Viviana-Hernandez", "vivianahernandez123@gmail.com", "Viviana123");
-// $camilo = new User("Camilo Hernandez", "Camilo-Hernandez", "camilohernandez123@gmail.com", "Camilo123");
-// $julio = new User("Julio Sanchez", "Julio-Sanchez", "juliosanchez12@gmail.com", "Julio123");
 
 // $maicolPost = new ImagePost("Programando en las noches", "IMG001.jpg");
 // $vivianaPost = new VideoPost("En la playa de Cancun, con mi amorcito", "VID001.mov");
@@ -68,10 +63,7 @@ if (count($parts) > 8) {
 // $maicol->showPosts();
 
 
-// print_r(User::showProfile($maicol));
-// print_r(User::showProfile($viviana));
-// print_r(User::showProfile($camilo));
-// print_r(User::showProfile($julio));
+
 
 // print_r($maicolPost->toString());
 // print_r($vivianaPost->toString());

@@ -15,10 +15,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Api\\Instagram\\": "src/"
+            "App\\": "app/",
+            "Api\\Instagram\\": "app/"
         }
     },
     "file": [
-        "src/helpers.php"
+        "app/helpers/helpers.php"
     ]
 }
