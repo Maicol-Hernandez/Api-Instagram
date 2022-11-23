@@ -2,7 +2,7 @@
 
 namespace Api\Instagram\models;
 
-use Api\Instagram\controllers\Controller;
+use App\Controllers\Controller;
 use Api\Instagram\utils\UUID;
 
 

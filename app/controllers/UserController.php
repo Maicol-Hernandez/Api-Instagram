@@ -1,8 +1,8 @@
 <?php
 
-namespace App\controllers;
+namespace App\Controllers;
 
-use App\controllers\Controller;
+use App\Controllers\Controller;
 use Api\Instagram\models\User;
 use Api\Instagram\Request;
 

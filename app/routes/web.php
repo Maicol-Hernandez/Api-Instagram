@@ -2,7 +2,7 @@
 
 use Api\Instagram\Router;
 
-use App\controllers\UserController;
+use App\Controllers\UserController;
 use App\Middlewares\IsAuth;
 use App\Middlewares\IsAdmin;
 
