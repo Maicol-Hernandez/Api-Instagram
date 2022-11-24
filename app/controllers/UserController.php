@@ -49,6 +49,9 @@ class UserController extends Controller
     public function show(int $id, Request $request)
     {
         # code...
+        // echo "id", $id;
+
+        return view('json', "show user id {$id}");
     }
 
     public function edit(int $id)
