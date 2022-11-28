@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Api\Instagram\Exceptions\HttpException;
 use App\Utils\UUID;
 use App\Database\Connection;
@@ -255,6 +256,7 @@ class User
         $profile = [
             "id" => $user->getId(),
             "uusername" => $user->username,
+            "name" => $user->username,
             "followers" => count($user->followers),
             "posts" => count($user->posts)
         ];
