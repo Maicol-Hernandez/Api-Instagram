@@ -3,33 +3,58 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use Api\Instagram\Exceptions\HttpException;
+// use app\Middleware\
 use App\Models\User;
 use Api\Instagram\Request;
 
+
 class UserController extends Controller
 {
-    public function create()
+
+    /**
+     * 
+     */
+    public function create(Request $request)
     {
-        # code...
-        // echo "create";
-        $user = new User("Michael Hernandez", "Maicol-Hernandez", "maicolhernandez420@gmail.com", "Maicol20016");
 
-        // Router::post('/users', function () {
-        //     return new \Api\Instagram\Response('json', 'User created succesfulley', 201);
-        // });
+        $fields = ['name', 'username', 'email', 'password'];
+
+        foreach ($fields as $field) {
+            # all fiels data
+            if (!isset($_POST[$field])) {
+                # error 400 Bad request
+                throw new HttpException("You must send field {$field}", 400);
+                exit;
+            }
+        }
+
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            # error 422 Payment required
+            throw new HttpException("Invalid 'email' format", 422);
+            exit;
+        }
+
+        if (strlen($_POST['password']) < 6 || strlen($_POST['password']) > 64) {
+            # error 422 Payment required
+            throw new HttpException("The 'password' field must be between 6 and 64 characters long", 422);
+            exit;
+        }
+
+        $user = new User($_POST['name'],  $_POST['username'], $_POST['email'], $_POST['password']);
 
 
-
-        return view('json', 'User created succesfulley', 201);
+        return view('json', "User created succesfulley, id user {$user->create()}", 201);
     }
 
+    /**
+     * @return object Users
+     */
     public function all()
     {
         # code...
 
         // echo "all";
-
-        $user = new User("Michael Hernandez", "Maicol-Hernandez", "maicolhernandez420@gmail.com", "Maicol20016");
 
         // $viviana = new User("Viviana Hernandez", "Viviana-Hernandez", "vivianahernandez123@gmail.com", "Viviana123");
         // $camilo = new User("Camilo Hernandez", "Camilo-Hernandez", "camilohernandez123@gmail.com", "Camilo123");
@@ -41,11 +66,12 @@ class UserController extends Controller
         // print_r(User::showProfile($julio));
 
 
-
-
-        return view('json', User::showProfile($user));
+        return view('json',  User::getAll());
     }
 
+    /**
+     * 
+     */
     public function show(int $id, Request $request)
     {
         # code...
@@ -54,16 +80,25 @@ class UserController extends Controller
         return view('json', "show user id {$id}");
     }
 
+    /**
+     * 
+     */
     public function edit(int $id)
     {
         # code...
     }
 
+    /**
+     * 
+     */
     public function update(Request $request,  User $user)
     {
         # code...
     }
 
+    /**
+     * 
+     */
     public function delate(User $user)
     {
         # code...
