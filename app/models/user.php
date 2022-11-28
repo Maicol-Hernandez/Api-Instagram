@@ -1,8 +1,8 @@
 <?php
 
-namespace Api\Instagram\models;
+namespace App\Models;
 
-use Api\Instagram\utils\UUID;
+use App\Utils\UUID;
 
 class User
 {
@@ -86,6 +86,7 @@ class User
     public static function showProfile(User $user)
     {
         $profile = [
+            "id" => $user->getId(),
             "name" => $user->username,
             "followers" => count($user->followers),
             "posts" => count($user->posts)

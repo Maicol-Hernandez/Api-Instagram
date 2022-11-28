@@ -1,12 +1,11 @@
 <?php
 
-namespace Api\Instagram\models;
+namespace App\Models;
 
-use App\Controllers\Controller;
 use Api\Instagram\utils\UUID;
 
 
-class Post extends Controller
+class Post
 {
     private string $id;
     private string $mensaje;
