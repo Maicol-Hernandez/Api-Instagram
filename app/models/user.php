@@ -6,32 +6,35 @@ namespace App\Models;
 use Api\Instagram\Exceptions\HttpException;
 use App\Utils\UUID;
 use App\Database\Connection;
+
 use PDO;
 
 class User
 {
 
-    private string $email, $password, $username, $name, $id;
+    private ?string $name, $username, $email, $password, $id;
+    private ?bool $is_active, $is_admin;
     private array $posts, $followers;
+    private static array $users;
     public Connection $conn;
 
     private const TABLE = "api_users.users";
 
 
     /**
-     * @return string emial
+     * @return string name
      */
-    public function getEmail(): string
+    public function getName(): string
     {
-        return $this->email;
+        return $this->name;
     }
 
     /**
-     * @return string password
+     * @param string name
      */
-    public function getPassword(): string
+    public function setName(string $name): void
     {
-        return $this->password;
+        $this->name = $name;
     }
 
     /**
@@ -43,11 +46,75 @@ class User
     }
 
     /**
-     * @return string name
+     * @param string username
      */
-    public function getName(): string
+    public function setUsername(string $username): void
     {
-        return $this->name;
+        $this->username = $username;
+    }
+
+    /**
+     * @return string emial
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string password
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return int is_active
+     */
+    public function getIs_active(): bool
+    {
+        return $this->is_active;
+    }
+
+    /**
+     * @param bool is_active
+     */
+    public function setIs_active(bool $is_active): void
+    {
+        $this->is_active = $is_active;
+    }
+
+    /**
+     * @return bool is_admin
+     */
+    public function getIs_admin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    /**
+     * @param bool is_admin
+     */
+    public function setIs_admin(bool $is_admin): void
+    {
+        $this->is_admin = $is_admin;
     }
 
     /**
@@ -75,35 +142,11 @@ class User
     }
 
     /**
-     * @param string email
+     * @param array followers
      */
-    public function setEmail(string $email): void
+    public function setFollowers(array $followers): void
     {
-        $this->email = $email;
-    }
-
-    /**
-     * @param string password
-     */
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @param string username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @param string name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
+        $this->followers = $followers;
     }
 
     /**
@@ -115,19 +158,29 @@ class User
     }
 
     /**
-     * @param array followers
+     * @return array users
      */
-    public function setFollowers(array $followers): void
+    public static function getUsers(): array
     {
-        $this->followers = $followers;
+        return self::$users;
+    }
+
+    /**
+     * @param array users
+     */
+    public static function setUsers(array $users): void
+    {
+        self::$users = $users;
     }
 
 
     public function __construct(
-        string $name,
-        string $username,
-        string $email,
-        string $password
+        ?string $name,
+        ?string $username,
+        ?string $email,
+        ?string $password,
+        ?bool $is_active,
+        ?bool $is_admin
     ) {
         // properties
         $this->id = UUID::generate();
@@ -135,9 +188,12 @@ class User
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
+        $this->is_active = $is_active;
+        $this->is_admin = $is_admin;
         // arrays
         $this->followers = [];
         $this->posts = [];
+        self::$users = [];
         // connection
         $this->conn = new Connection();
     }
@@ -191,7 +247,7 @@ class User
         $password = password_hash($this->password, PASSWORD_DEFAULT);
         $table = self::TABLE;
 
-        $users = $this->getAll();
+        $users = self::getAll();
 
         foreach ($users as $user) {
 
@@ -214,10 +270,10 @@ class User
             }
         }
 
-        $consulta = "INSERT INTO {$table} (nombre, username, email, password) VALUES (:nombre, :username, :email, :password)";
+        $consulta = "INSERT INTO {$table} (name, username, email, password, is_active, is_admin) VALUES (:name, :username, :email, :password, :is_active, :is_admin)";
         $stmt = $this->conn->prepare($consulta);
 
-        $stmt->execute(array(':nombre' => $this->name, ':username' => $this->username, ':email' => $this->email, ':password' => $password));
+        $stmt->execute(array(':name' => $this->name, ':username' => $this->username, ':email' => $this->email, ':password' => $password, ':is_active' => $this->is_active, ':is_admin' => $this->is_admin));
 
         $this->id = $this->conn->lastInsertId();
 
@@ -229,23 +285,66 @@ class User
      * get all users
      * @return array users
      */
-    public static  function getAll(): array
+    public static function getAll(): array
     {
         $conn = new Connection;
         $table = self::TABLE;
         $data = [];
 
-        $consulta = "SELECT id, nombre, username, email, password FROM {$table} ORDER BY nombre";
+        $consulta = "SELECT id, name, username, email, password, is_active, is_admin FROM {$table} ORDER BY name";
 
         $stmt = $conn->prepare($consulta);
         $stmt->execute();
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            # code...
+
+            $row['is_active'] = (bool) $row['is_active'];
+            $row['is_admin'] = (bool) $row['is_admin'];
+
             array_push($data, $row);
         }
 
         return $data;
+    }
+
+
+    /**
+     * return user
+     * @param int id user
+     * @return object user
+     */
+    public static function getUserId(int $id): object
+    {
+
+        $table = self::TABLE;
+        $conn = new Connection();
+
+        $consulta = "SELECT id, name, username, email, password, is_active, is_admin FROM {$table} WHERE id = :id";
+
+        $stmt = $conn->prepare($consulta);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
+        $user->is_active = (bool) $user->is_active;
+        $user->is_admin = (bool) $user->is_admin;
+
+        return $user;
+    }
+
+    /**
+     * 
+     */
+    public static function getUserEmail(User $usr): array
+    {
+
+        $users = self::getAll();
+
+        foreach ($users as $user) {
+            if ($user['email'] === $usr->email) {
+                return $user;
+            }
+        }
     }
 
     /**

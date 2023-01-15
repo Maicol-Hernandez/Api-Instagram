@@ -8,16 +8,23 @@ use Api\Instagram\Exceptions\HttpException;
 use Api\Instagram\middlewares\Middleware;
 use Api\Instagram\Request;
 
-
+/**
+ * This class add routes to systema
+ */
 class Router
 {
     private static array $urls = [];
-
     private const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
-    private static function route(string $method, string $route, $handler, string $middleware  = null): void
+    /**
+     * @var array save routes in $urls var
+     * @param string $method http method
+     * @param string $route URI
+     * @param string|callable $handler class/method or callabled to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    private static function route(string $method, string $route, $handler, $middleware  = null): void
     {
-        # code...
 
         $invalid_type = !is_callable($handler) && !is_string($handler);
         $invalid_format = is_string($handler) && !preg_match('/@/', $handler);
@@ -45,6 +52,11 @@ class Router
         ];
     }
 
+    /**
+     * Get class, methid middleware associate an URI
+     * 
+     * @return array whith class, method and params 
+     */
     public static function getRouteInfo(): array
     {
         $uri = $_SERVER['REQUEST_URI'] ?? '';
@@ -74,17 +86,9 @@ class Router
                     $path_params[$key] = $val;
                 }
 
-                $request = new Request();
-
-                if ($middleware) {
-                    $middleware = new $middleware;
-                    if (!($middleware instanceof Middleware)) {
-                        throw new RouterException("Invalid middleware, must be extends of Api\\Middleware");
-                    }
-                    $request = $middleware->handle($request);
-                }
-
+                $request = self::execMiddlewares($middleware);
                 $path_params['request'] = $request;
+
                 return [
                     "handler" => $handler,
                     "path_params" => $path_params
@@ -97,27 +101,88 @@ class Router
         throw new HttpException("Not found", 404);
     }
 
-    public static function get(string $route, $handler, string $middleware = null): void
+    /**
+     * check if we have any middleware and if yes, create an instance and handle
+     * @param string|array $middleware middleware class, can be optional
+     * 
+     * @return Request object 
+     */
+    private static function execMiddlewares($middleware): Request
+    {
+        $request = new Request();
+        if (!$middleware) {
+            return $request;
+        }
+
+        $middlewares = $middleware;
+        if (is_string($middleware)) {
+            $middlewares = [$middleware];
+        }
+
+        unset($middleware);
+
+        foreach ($middlewares as $middleware) {
+            $middleware = new $middleware;
+            if (!($middleware instanceof Middleware)) {
+                throw new RouterException("Invalid middleware, must be extends of Api\\Middleware");
+            }
+            $request = $middleware->handle($request);
+        }
+
+        return $request;
+    }
+
+    /**
+     * save route for method GET
+     * @param string $route URI
+     * @param string|callable $handler class/method to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    public static function get(string $route, $handler, $middleware = null): void
     {
         self::route('GET', $route, $handler, $middleware);
     }
 
-    public static function post(string $route, $handler, string $middleware = null): void
+    /**
+     * save route for method POST
+     * @param string $route URI
+     * @param string|callable $handler class/method to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    public static function post(string $route, $handler, $middleware = null): void
     {
         self::route('POST', $route, $handler, $middleware);
     }
 
-    public static function put(string $route, $handler, string $middleware = null): void
+    /**
+     * save route for method PUT
+     * @param string $route URI
+     * @param string|callable $handler class/method to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    public static function put(string $route, $handler, $middleware = null): void
     {
         self::route('PUT', $route, $handler, $middleware);
     }
 
-    public static function patch(string $route, $handler, string $middleware = null): void
+    /**
+     * save route for method PATCH
+     * @param string $route URI
+     * @param string|callable $handler class/method to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    public static function patch(string $route, $handler, $middleware = null): void
     {
         self::route('PATCH', $route, $handler, $middleware);
     }
 
-    public static function delete(string $route, $handler, string $middleware = null): void
+    /**
+     * save route for method DELETE
+     * @param string $route URI
+     * @param string|callable $handler class/method to call for this url
+     * @param string|array $middleware middleware class, can be optional 
+     */
+    public static function delete(string $route, $handler, $middleware = null): void
     {
         self::route('DELETE', $route, $handler, $middleware);
     }

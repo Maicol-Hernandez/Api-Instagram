@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
-
 use Api\Instagram\Exceptions\HttpException;
-// use app\Middleware\
-
 use App\Models\User;
 use Api\Instagram\Request;
+use App\Middlewares\Auth;
+
+use App\helpers\Pagination;
 
 
 class UserController extends Controller
@@ -17,10 +17,10 @@ class UserController extends Controller
     /**
      * 
      */
-    public function create(Request $request)
+    public function create()
     {
 
-        $fields = ['name', 'username', 'email', 'password'];
+        $fields = ['name', 'username', 'email', 'password', 'is_active', 'is_admin'];
 
         foreach ($fields as $field) {
             # all fiels data
@@ -43,10 +43,13 @@ class UserController extends Controller
             exit;
         }
 
-        $user = new User($_POST['name'],  $_POST['username'], $_POST['email'], $_POST['password']);
+        // echo "is_active controller ",$_POST['is_active'] . "\n";
+
+        $user = new User($_POST['name'], $_POST['username'], $_POST['email'], $_POST['password'], $_POST['is_active'], $_POST['is_admin']);
 
 
-        return view('json', "User created succesfulley, id user {$user->create()}", 201);
+
+        return view('json', "User created succesfulley, id user {$user->create()}", 201); // Satisfactoria 201 Create 
     }
 
     /**
@@ -54,21 +57,15 @@ class UserController extends Controller
      */
     public function all()
     {
-        # code...
+        $users = User::getAll();
+        foreach ($users as &$user) {
+            unset($user['password']);
+        }
+        unset($user);
 
-        // echo "all";
+        $fields = ['is_active', 'is_admin'];
 
-        // $viviana = new User("Viviana Hernandez", "Viviana-Hernandez", "vivianahernandez123@gmail.com", "Viviana123");
-        // $camilo = new User("Camilo Hernandez", "Camilo-Hernandez", "camilohernandez123@gmail.com", "Camilo123");
-        // $julio = new User("Julio Sanchez", "Julio-Sanchez", "juliosanchez12@gmail.com", "Julio123");
-
-        // print_r(User::showProfile($maicol));
-        // print_r(User::showProfile($viviana));
-        // print_r(User::showProfile($camilo));
-        // print_r(User::showProfile($julio));
-
-
-        return view('json',  User::getAll());
+        return view('json', Pagination::pagination($users, $fields));
     }
 
     /**
@@ -76,10 +73,13 @@ class UserController extends Controller
      */
     public function show(int $id, Request $request)
     {
-        # code...
-        // echo "id", $id;
 
-        return view('json', "show user id {$id}");
+        // Auth::isAuth($request);
+
+        // $user_id = $request->getData('user_id');
+
+
+        return view('json', User::getUserId($id));
     }
 
     /**
@@ -88,21 +88,30 @@ class UserController extends Controller
     public function edit(int $id)
     {
         # code...
+
+        return view('json', "edit {$id}", 200);
     }
 
     /**
      * 
      */
-    public function update(Request $request,  User $user)
+    public function update(Request $request)
     {
-        # code...
+        Auth::isAuth($request);
+
+        return view('json', []);
     }
 
     /**
      * 
      */
-    public function delate(User $user)
+    public function delete(int $id, Request $request)
     {
         # code...
+
+        echo "user id ", $id, "\n";
+
+
+        return view('raw', 'delete'); // 204 Not Content
     }
 }

@@ -17,6 +17,9 @@ class App
         $this->checkEnv();
     }
 
+    /**
+     * 
+     */
     private function checkEnv(): void
     {
         # code...
@@ -64,6 +67,9 @@ class App
         }
     }
 
+    /**
+     * 
+     */
     public function send(): void
     {
         # code...
@@ -98,23 +104,23 @@ class App
                 throw $e;
             }
 
-            echo "error2";
-
             $this->saveLog($e);
             $response = new Response('json', 'Internal Server Error', 500);
             $response->returnData();
         }
     }
 
+    /**
+     * 
+     */
     private function saveLog($exception): void
     {
         # code...
-        echo "seveLog";
 
         $log_dir = $_ENV['ROOT_PROJECT'] . '/logs/';
 
         if (!is_dir($log_dir)) {
-            # code...
+            # create directory 
             mkdir($log_dir);
         }
 

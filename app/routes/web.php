@@ -3,22 +3,25 @@
 use Api\Instagram\Router;
 
 use App\Controllers\UserController;
-use App\Middlewares\IsAuth;
-use App\Middlewares\IsAdmin;
+use App\Controllers\AuthController;
+use App\Middlewares\BasicAuth;
+use App\Middlewares\AdminAuth;
 
 
 Router::get('/', function () {
     return view('json', 'Hello world');
 });
 
-Router::get('/api/v1/users', UserController::class . '@all', IsAdmin::class);
-Router::get('/api/v1/users/(?<id>\d+)', UserController::class . '@show', IsAdmin::class);
+// user
+Router::get('/api/v1/users', UserController::class . '@all', AdminAuth::class);
+Router::get('/api/v1/users/(?<id>\d+)', UserController::class . '@show');
 Router::post('/api/v1/users', UserController::class . '@create');
-Router::put('/api/v1/users/(?<id>\d+)', UserController::class . '@update', IsAuth::class);
-Router::patch('/api/v1/users/(?<id>\d+)', UserController::class . '@edit', IsAuth::class);
-Router::delete('/api/v1/users/(?<id>\d+)', UserController::class . '@delete');
+Router::put('/api/v1/users/(?<id>\d+)', UserController::class . '@update', BasicAuth::class);
+Router::patch('/api/v1/users/(?<id>\d+)', UserController::class . '@edit', BasicAuth::class);
+Router::delete('/api/v1/users/(?<id>\d+)', UserController::class . '@delete', AdminAuth::class);
 
-// Router::post('/users', UserController::class . '@create');
+// login
+Router::post('/api/v1/login', AuthController::class . '@auth');
 
 // Router::post('/users', function () {
 //     return new \Api\Instagram\Response('json', 'User created succesfulley', 201);
